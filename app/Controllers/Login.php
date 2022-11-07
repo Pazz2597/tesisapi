@@ -45,7 +45,7 @@ class Login extends ResourceController
                 "sub" => "Authentication",
                 "iat" => $iat, //Time the JWT issued at
                 "exp" => $exp, // Expiration time of token
-                "mesa_id" => $mesa->codigo,
+                "mesa_id" => $mesa->id,
             );
                         
             $token = JWT::encode($payload, $key, 'HS256');

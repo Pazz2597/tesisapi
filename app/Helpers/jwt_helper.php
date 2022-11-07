@@ -4,7 +4,7 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
 function getUserFromRequest($request){
-    $key = getenv('JWT_SECRET');
+    $key = getKey();
     $header = $request->getServer('HTTP_AUTHORIZATION');
     $token = null;
 
@@ -28,4 +28,7 @@ function getClaim($request, $claimName)
     if(!isset($data[$claimName])) return null;
     $claim = $data[$claimName];
     return $claim;
+}
+function getKey(){
+    return 'YYF1kwvIw41hGY99lS5asUbY0JVHLXzd';
 }

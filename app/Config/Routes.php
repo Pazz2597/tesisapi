@@ -38,7 +38,7 @@ $routes->set404Override();
 $routes->get('/', 'Home::index');
 //$routes->resource('login');
 $routes->get('/login/(:any)/(:any)', 'Login::index/$1/$2');
-$routes->resource('mesa');
+$routes->resource('mesa',['filter' => 'authFilter']);
 
 
 /*
