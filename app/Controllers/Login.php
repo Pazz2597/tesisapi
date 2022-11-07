@@ -10,14 +10,15 @@ class Login extends ResourceController
 {
     use ResponseTrait;
 
-    public function index()
+    public function index($codigo = '', $secreto = '')
     {
         try {
             helper('encryption');  
             $mesaModel = new MesaModel();
-            $jsonData = $this->request->getJSON();
-            $codigo = $jsonData->codigo;
-            $secreto = $jsonData->secreto;
+            //$jsonData = $this->request->getJSON();
+            //return $this->respond(['codigo recibido'=>$codigo, 'secreto recibido'=> $secreto], 200);
+            //$codigo = $jsonData->codigo;
+            //$secreto = $jsonData->secreto;
             
             $mesa = $mesaModel->where('codigo', $codigo)->first();
             
