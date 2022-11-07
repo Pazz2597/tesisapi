@@ -44,7 +44,8 @@ class AuthFilter implements FilterInterface
      */
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
-        $key = getenv('JWT_SECRET');
+        helper('jwt_helper');
+        $key = getKey();
         $header = $request->getHeader("Authorization");
         $token = null;
  
@@ -54,7 +55,7 @@ class AuthFilter implements FilterInterface
                 $token = $matches[1];
             }
         }
- 
+
         // check if token is null or empty
         if(is_null($token) || empty($token)) {
             $response = service('response');

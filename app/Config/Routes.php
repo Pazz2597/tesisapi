@@ -36,8 +36,9 @@ $routes->set404Override();
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
-$routes->resource('login');
-$routes->resource('mesa');
+//$routes->resource('login');
+$routes->get('/login/(:any)/(:any)', 'Login::index/$1/$2');
+$routes->resource('mesa',['filter' => 'authFilter']);
 
 
 /*

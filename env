@@ -138,3 +138,4 @@
 #--------------------------------------------------------------------
 
 # curlrequest.shareOptions = true
+JWT_SECRET = 'YYF1kwvIw41hGY99lS5asUbY0JVHLXzd'
