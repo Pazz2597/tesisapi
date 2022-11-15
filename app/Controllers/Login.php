@@ -59,7 +59,7 @@ class Login extends ResourceController
             return $this->respond($response, 200);
         } catch (\Exception $e) {
             return $this->respond($e->getMessage());
-        }
-        
+        }        
     }
+
 }
