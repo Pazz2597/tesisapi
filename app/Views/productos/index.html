@@ -1,0 +1,153 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="container-fluid mt-4" id="app">
+        <div class="card mb-3">
+            <div class="card-header bg-primary text-light">
+                <h5 class="card-title">Gestion de producto</h5>
+            </div>
+            <div class="card-body">
+                <div class="row mt-2">
+                    <div class="col-5">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group row">
+                                    <label for="" class="col-form-label col-4">
+                                        Nombre
+                                    </label>
+                                    <div class="col-8"><input type="text"  class="form-control" id="nombre"></div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group row">
+                                    <label for="" class="col-form-label col-4">
+                                        Precio
+                                    </label>
+                                    <div class="col-8"><input type="number" step="0.1" min="0" class="form-control" id="precio"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                <div class="form-group row">
+                                    <label for="" class="col-form-label col-4">
+                                        Descr
+                                    </label>
+                                    <div class="col-8"><input type="text" class="form-control" id="descripcion"></div>
+                                </div>
+                            </div>
+                            <div class="col-6 d-flex justify-content-end">
+                                <button type="button" class="btn btn-block btn-primary" onclick="saveProducto()"> Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="table-responsive-md">
+                            <table class="table table-hover">
+                                <thead class="bg-black text-light p-1">
+                                <tr>
+                                    <th scope="col">Id</th>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Precio</th>
+                                    <th scope="col">Descripción</th>
+                                    <th scope="col">Acciones</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tproductos">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+{% block javascript %}
+<script>
+    let update = false;
+    let id = null;
+    function getProductos() {
+        $.ajax({
+            url: '/producto',
+            method: 'get',
+            success: function(data){
+                
+                data.forEach(i => {
+                    let strdata = JSON.stringify(i);
+                    let html = `<th scope="row">${i.id}</th>
+                    <td>${i.nombre}</td> 
+                    <td>${i.precio}</td> 
+                    <td>${i.descripcion}</td> 
+                    <td> 
+                        <button class="btn btn-sm btn-warning update-btn" data-producto='${strdata}'> <i class="class fa fa-edit"></i> </button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteProducto(${i.id})"> <i class="class fa fa-trash"></i> </button> 
+                    </td>`;
+                    let tr = document.createElement('tr');
+                    tr.innerHTML = html;
+                    $("#tproductos").append(tr);
+                })
+                $(".update-btn").click(updateProducto)
+                
+            },
+            error: function(err){
+                console.log(err)
+            }
+        })
+        
+    }
+    function saveProducto(){
+        let url = '/producto';
+        let method = 'post';
+        if(update){
+            url += '/'+ id;
+            method = 'put';
+        }
+        let nombre = $("#nombre").val();
+        let precio = $("#precio").val();
+        let descripcion = $("#descripcion").val();
+        let producto = { nombre, precio, descripcion};
+        console.log(producto)
+        $.ajax({
+            url: url,
+            method: method,
+            data: JSON.stringify(producto),
+            contentType:"application/json; charset=utf-8",
+            dataType:"json",
+            success: function(data){
+                location.reload();
+            },         
+            error: function(err){
+                console.log(err)
+            }
+        })
+    }
+    function updateProducto(){
+        let producto = $(this).data('producto')
+        $("#nombre").val(producto.nombre);
+        $("#precio").val(producto.precio);
+        $("#descripcion").val(producto.descripcion);
+        update = true;
+        id = producto.id;
+        //let producto = { nombre, precio, descripcion};    
+    }
+    function deleteProducto(id){
+        $.ajax({
+            url: '/producto/'+id,
+            method: 'delete',
+            contentType:"application/json; charset=utf-8",
+            dataType:"json",
+            success: function(data){
+                location.reload();
+            },         
+            error: function(err){
+                console.log(err)
+            }
+        })
+    }
+    getProductos();
+</script>
+{% endblock %}

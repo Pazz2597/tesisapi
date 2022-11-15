@@ -36,7 +36,7 @@ abstract class BaseController extends Controller
      * @var array
      */
     protected $helpers = [];
-
+    protected $twig;
     /**
      * Constructor.
      */
@@ -48,5 +48,11 @@ abstract class BaseController extends Controller
         // Preload any models, libraries, etc, here.
 
         // E.g.: $this->session = \Config\Services::session();
+        $appPaths = new \Config\Paths();
+        $appViewPaths = $appPaths->viewDirectory;
+
+        $loader = new \Twig\Loader\FilesystemLoader($appViewPaths);
+        //['cache' => WRITEPATH.'/cache/twig',]
+        $this->twig = new \Twig\Environment($loader);
     }
 }

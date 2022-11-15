@@ -25,8 +25,7 @@ class Mesa extends ResourceController
         $token->token = rand(100000, 999999);
         $token->inicio = time();
         $token->fin = $token->inicio + 180;
-        $token->id_mesa =
-        $mesa_id = $userData->mesa_id;
+        $token->id_mesa = $userData->mesa_id;
         $model->save($token);
         return $this->respond($token);
     }
