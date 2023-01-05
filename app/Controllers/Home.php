@@ -12,6 +12,12 @@ class Home extends BaseController
         $productos = $model->findAll();
         //$template = $this->twig->load('productos/index.html.twig');
         //return $this->twig->render('productos/show.html', ['productos'=> $productos]);
-         echo view('menu/index.html');
+         echo view('index.html');
+    }
+    public function productos()
+    {
+        $model = new ProductoModel();
+        $productos = $model->findAll();
+        return $this->twig->render('productos/show.html', ['productos'=> $productos]);
     }
 }

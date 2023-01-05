@@ -14,7 +14,7 @@
                   
                 </div>
                 <div class="card-footer ">
-                    <button class="btn btn-primary">
+                    <button class="btn btn-primary agregar-producto" onclick="agregarProducto('{{p|json_encode()}}')">
                     Agregar a la orden por: <i class="fa fa-dollar"></i>{{p.precio|number_format(2)}}
                     </button>                    
                 </div>
@@ -23,4 +23,38 @@
         {% endfor %}
     </div>
 </div>
+
+
+
+{% endblock %}
+{% block javascript %}
+<script>
+    var productosCarrito = [];
+    setNItems();
+    function setNItems(){
+        let n = productosCarrito.length;
+        $("#nItems").text(`${n}`);
+    }
+    function agregarProducto(jsonData){
+        let productoData  = JSON.parse(jsonData);
+        let exist = productosCarrito.find(p => p.id == productoData.id);
+        console.log(exist);
+        if(typeof exist != 'undefined'){
+            exist.cantidad++;
+        }else{            
+            productoData.cantidad = 1;
+            productosCarrito.push(productoData);
+        }                
+        console.log(productosCarrito);
+        setNItems();
+    }
+    function setCookies(){
+        var cookieName = 'HelloWorld';
+        var cookieValue = 'HelloWorld';
+        var myDate = new Date();
+        myDate.setMonth(myDate.getMonth() + 12);
+        document.cookie = cookieName +"=" + cookieValue + ";expires=" + myDate + ";domain=.example.com;path=/";
+    }
+</script>
+
 {% endblock %}
