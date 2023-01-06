@@ -28,6 +28,7 @@
 
 {% endblock %}
 {% block javascript %}
+<!--AGREGAR PRODUCTOS AL CARRITO-->
 <script>
     var productosCarrito = [];
     setNItems();
@@ -36,17 +37,36 @@
         $("#nItems").text(`${n}`);
     }
     function agregarProducto(jsonData){
-        let productoData  = JSON.parse(jsonData);
+        let productoData;
+        try{
+            productoData  = JSON.parse(jsonData);
+        }catch{
+            productoData = jsonData;
+        }
+        
         let exist = productosCarrito.find(p => p.id == productoData.id);
-        console.log(exist);
+        
         if(typeof exist != 'undefined'){
             exist.cantidad++;
         }else{            
             productoData.cantidad = 1;
             productosCarrito.push(productoData);
         }                
-        console.log(productosCarrito);
         setNItems();
+        actualizarVistaCarrito();
+    }
+    function quitarProducto(productoData){
+        
+        let exist = productosCarrito.find(p => p.id == productoData.id);
+        if(typeof exist != 'undefined'){
+            if(exist.cantidad > 1){
+                exist.cantidad--;
+            }else{
+                productosCarrito = productosCarrito.filter(p => p.id != productoData.id);
+            }            
+        }                
+        setNItems();
+        actualizarVistaCarrito();
     }
     function setCookies(){
         var cookieName = 'HelloWorld';
@@ -55,6 +75,65 @@
         myDate.setMonth(myDate.getMonth() + 12);
         document.cookie = cookieName +"=" + cookieValue + ";expires=" + myDate + ";domain=.example.com;path=/";
     }
+    
 </script>
+<!--FIN AGREGAR PRODUCTOS AL CARRITO-->
+<!--MOSTRAR PRODUCTOS DEL CARRITO-->
+<script>
+    function actualizarVistaCarrito(){
+        
+        $html = '';
+        productosCarrito.forEach(p => {
+            $html += 
+                `<li class="list-group-item">
+                    <div class="row">
+                        <div class="col-2">
+                            <b>${p.cantidad}</b>
+                        </div>
+                        <div class="col-6">
+                            ${p.nombre}
+                        </div>
+                        <div class="col-4">
+                            <button class="btn btn-sm btn-danger" onclick='quitarProducto(${JSON.stringify(p)})'><i class="fa fa-minus"></i></button>
+                            <button class="btn btn-sm btn-success" onclick='agregarProducto(${JSON.stringify(p)})'><i class="fa fa-plus"></i></button>
+                        </div>
+                    </div>
+                </li>`;
+        })
+        $('#listaProductos').html($html);
+        actualizarTotalCarrito();
+    }
+    function actualizarTotalCarrito(){
+        let total = productosCarrito.reduce((prev, curr)=>{
+            return prev + curr.cantidad*curr.precio
+        },0)
+        $("#totalCarrito").text(`${total.toFixed(2)}`);
+    }
+    $("#btnConfirmarOrden").click(function(){
+        let observaciones = $("#observaciones").val();
+        let token = $("#tokenMesa").val();
+        let orden = {
+            productos: productosCarrito,
+            observaciones: observaciones,
+            token: token
+        };
+        let url = '/orden';
+        let method = 'post';
 
+        $.ajax({
+            url: url,
+            method: method,
+            data: JSON.stringify(orden),
+            contentType:"application/json; charset=utf-8",
+            dataType:"json",
+            success: function(data){
+                console.log(data)
+            },         
+            error: function(err){
+                console.log(err)
+            }
+        })
+    })
+</script>
+<!--FIN MOSTRAR PRODUCTOS DEL CARRITO-->
 {% endblock %}

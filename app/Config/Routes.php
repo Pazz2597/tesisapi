@@ -40,8 +40,10 @@ $routes->get('/productos', 'Home::productos');
 $routes->get('/admin/productos', 'Admin::productos');
 //$routes->resource('login');
 $routes->get('/login/(:any)/(:any)', 'Login::index/$1/$2');
+$routes->get('/mesa/alerta', 'Mesa::alerta');
 $routes->resource('mesa',['filter' => 'authFilter']);
 $routes->resource('producto',[]);
+$routes->resource('orden',[]);
 
 
 /*

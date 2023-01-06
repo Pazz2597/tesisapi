@@ -1,0 +1,64 @@
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Carrito de compras</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="card">
+                <div class="card-header">
+                  Has agregado al carrito:
+                </div>
+                <ul class="list-group list-group-flush" id="listaProductos">
+
+                </ul>
+                <div class="card-footer">
+                    <figure class="text-end">
+                        <blockquote class="blockquote">
+                          <p>Total: <span id="totalCarrito"><b></b></span> <i class="fa fa-dollar"></i></p>
+                        </blockquote>
+                      </figure>
+                </div>
+              </div>
+              <form>
+                <div class="form-group">
+                  <label for="observaciones">Observaciones de tu pedido</label>
+                  <textarea class="form-control" name="observaciones" id="observaciones"></textarea>
+                </div>
+              </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalConfirmar">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+    <!-- Modal -->
+    <div class="modal fade" id="modalConfirmar" tabindex="-1" role="dialog" aria-labelledby="modalConfirmar" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" >Confirmar compra</h5>
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <!--AQUI VAN LAS INSTRUCCIONES -->
+                <div class="form-group">
+                    <label for="tokenMesa">Token de mesa</label>
+                    <input type="text" class="form-control" id="tokenMesa">
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+              <button type="button" class="btn btn-primary" id="btnConfirmarOrden">Confirmar</button>
+            </div>
+          </div>
+        </div>
+      </div>
