@@ -5,6 +5,6 @@ class ProductoModel extends Model
 {
     protected $table = 'producto';
     protected $primaryKey = 'id';
-    protected $allowedFields = [ 'nombre', 'precio', 'descripcion'];
+    protected $allowedFields = [ 'nombre', 'precio', 'descripcion','tipo','stock'];
     protected $returnType    = \App\Entities\Producto::class;
 }

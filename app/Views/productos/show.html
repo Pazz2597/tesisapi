@@ -2,14 +2,15 @@
 {% block body %}
 <div class="container-fluid">
     <div class="row">
-        {% for p in productos %}
+        {% for p in productos %}               
         <div class="col-sm-2 mt-2">
             <div class="card text-center">
                 <div class="card-header bg-dark text-light">
-                    Producto #{{p.id}}
+                    <h5 class="card-title">{{p.nombre}}</h5>
+                    <!-- Producto #{{p.id}} -->
                 </div>
                 <div class="card-body">
-                  <h5 class="card-title">{{p.nombre}}</h5>
+                  <!-- <h5 class="card-title">{{p.nombre}}</h5> -->
                   <p class="card-text">{{p.descripcion}}</p>
                   
                 </div>
@@ -23,6 +24,8 @@
         {% endfor %}
     </div>
 </div>
+
+
 
 
 

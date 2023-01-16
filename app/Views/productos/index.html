@@ -37,6 +37,16 @@
                                     <div class="col-8"><input type="text" class="form-control" id="descripcion"></div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                <div class="form-group row">
+                                    <label for="" class="col-form-label col-4">
+                                        Tipo
+                                    </label>
+                                    <div class="col-8"><input type="text" class="form-control" id="tipo"></div>
+                                </div>
+                            </div>
                             <div class="col-6 d-flex justify-content-end">
                                 <button type="button" class="btn btn-block btn-primary" onclick="saveProducto()"> Guardar</button>
                             </div>
@@ -51,7 +61,9 @@
                                     <th scope="col">Nombre</th>
                                     <th scope="col">Precio</th>
                                     <th scope="col">Descripción</th>
+                                    <th scope="col">Tipo</th>
                                     <th scope="col">Acciones</th>
+                                    
                                 </tr>
                                 </thead>
                                 <tbody id="tproductos">
@@ -83,6 +95,7 @@
                     <td>${i.nombre}</td> 
                     <td>${i.precio}</td> 
                     <td>${i.descripcion}</td> 
+                    <td>${i.tipo}</td> 
                     <td> 
                         <button class="btn btn-sm btn-warning update-btn" data-producto='${strdata}'> <i class="class fa fa-edit"></i> </button>
                         <button class="btn btn-sm btn-danger" onclick="deleteProducto(${i.id})"> <i class="class fa fa-trash"></i> </button> 
@@ -110,7 +123,8 @@
         let nombre = $("#nombre").val();
         let precio = $("#precio").val();
         let descripcion = $("#descripcion").val();
-        let producto = { nombre, precio, descripcion};
+        let tipo= $("#tipo").val();
+        let producto = { nombre, precio, descripcion, tipo};
         console.log(producto)
         $.ajax({
             url: url,
@@ -131,6 +145,7 @@
         $("#nombre").val(producto.nombre);
         $("#precio").val(producto.precio);
         $("#descripcion").val(producto.descripcion);
+        $("#tipo").val(producto.tipo);
         update = true;
         id = producto.id;
         //let producto = { nombre, precio, descripcion};    
