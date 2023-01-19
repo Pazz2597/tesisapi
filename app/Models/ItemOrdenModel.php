@@ -7,4 +7,5 @@ class ItemOrdenModel extends Model
     protected $primaryKey = 'id';
     protected $allowedFields = ['id', 'id_producto', 'id_orden', 'cantidad'];
     protected $returnType    = \App\Entities\ItemOrden::class;
+    
 }

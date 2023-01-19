@@ -1,0 +1,22 @@
+<div class="row">
+    {% for p in productos %}               
+    <div class="col-sm-2 mt-2">
+        <div class="card text-center" >
+            <div class="card-header bg-dark text-light">
+                <h5 class="card-title">{{p.nombre}}</h5>
+                <!-- Producto #{{p.id}} -->
+            </div>
+            <div class="card-body">
+              <!-- <h5 class="card-title">{{p.nombre}}</h5> -->
+              <p class="card-text">{{p.descripcion}}</p>
+              
+            </div>
+            <div class="card-footer ">
+                <button class="btn btn-primary agregar-producto" onclick="agregarProducto('{{p|json_encode()}}')">
+                Agregar a la orden por: <i class="fa fa-dollar"></i>{{p.precio|number_format(2)}}
+                </button>                    
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>

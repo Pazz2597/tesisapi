@@ -14,7 +14,8 @@
         "laminas/laminas-escaper": "^2.9",
         "firebase/php-jwt": "^6.1",
         "psr/log": "^1.1",
-        "twig/twig": "^3.0"
+        "twig/twig": "^3.0",
+        "takielias/codeigniter-websocket": "^1.0"
     },
     "require-dev": {
         "codeigniter/coding-standard": "^1.5",

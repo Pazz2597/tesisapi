@@ -37,7 +37,13 @@ $routes->set404Override();
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
 $routes->get('/productos', 'Home::productos');
+
+$routes->get('/admin-login', 'Admin::login');
+$routes->post('/admin-login', 'Admin::login');
+$routes->get('/logout' ,'Admin::logout');
+
 $routes->get('/admin/productos', 'Admin::productos');
+$routes->get('/admin/pedidos', 'Admin::pedidos');
 //$routes->resource('login');
 $routes->get('/login/(:any)/(:any)', 'Login::index/$1/$2');
 $routes->get('/mesa/alerta', 'Mesa::alerta');

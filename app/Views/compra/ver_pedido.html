@@ -1,0 +1,55 @@
+  <!-- Modal -->
+  <div class="modal fade" id="pedido_{{p.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Pedido</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="card">
+                <div class="card-header">
+                  Items del pedido:
+                </div>
+                <ul class="list-group list-group-flush" id="listaProductos">
+                  {% for p in pedido.items %}
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-2">
+                                <b>{{p.cantidad}}</b>
+                            </div>
+                            <div class="col-6">
+                                {{p.nombre}}
+                            </div>
+                            <div class="col-4">
+                                {{p.cantidad * p.precio}}
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <div class="card-footer">
+                    <figure class="text-end">
+                        <blockquote class="blockquote">
+                          <p>Total: <span id="totalCarrito"><b>{{pedido.total}}</b></span> <i class="fa fa-dollar"></i></p>
+                        </blockquote>
+                      </figure>
+                </div>
+              </div>
+              <form>
+                <div class="form-group">
+                  <label for="observaciones">Observaciones</label>
+                  <textarea class="form-control" name="observaciones" id="observaciones">
+                    {{pedido.observaciones}}
+                  </textarea>
+                </div>
+              </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Continuar</button>
+        </div>
+      </div>
+    </div>
+  </div>

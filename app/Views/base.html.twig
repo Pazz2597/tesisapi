@@ -26,20 +26,23 @@
                     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                         <div class="navbar-nav">
                             <a class="nav-link active" aria-current="page" href="/">Inicio</a>
-                            <a class="nav-link" href="/#menu">Menu</a>
-                            <a class="nav-link" href="/productos/#">Entradas</a>
-                            <a class="nav-link" href="/productos/#">Platos fuertes</a>
-                            <a class="nav-link" href="/productos/#">Bebidas sin Alcohol</a>
-                            <a class="nav-link" href="/productos/#">Licores</a>
-                            <a class="nav-link" href="/productos/#">Promociones</a>
+                            
+                            {% if user is defined %}
+                                <a class="nav-link" href="/admin/pedidos">Pedidos</a>
+                            {% endif %}
                         </div>
                     </div>
+                    
+                    {% if user is defined %}
+                    <span>Hola {{user}}</span>
+                    <a type="button" class="btn btn-outline-danger" href="/logout">Cerrar Sesión</a>
+                    {% else %}
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
                         <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                         <span id="nItems" class="badge badge-danger"></span>
                     </button>
-
+                    {% endif %}
                     
                 </div>
             </nav>

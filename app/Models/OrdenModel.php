@@ -5,7 +5,7 @@ class OrdenModel extends Model
 {
     protected $table = 'orden';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['fecha', 'id_token', 'total', 'observaciones'];
+    protected $allowedFields = ['fecha', 'id_token', 'total', 'observaciones', 'estado'];
     protected $returnType    = \App\Entities\Orden::class;
 
     function guardar($orden){

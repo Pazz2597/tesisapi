@@ -4,7 +4,7 @@ namespace App\Entities;
 
 use CodeIgniter\Entity\Entity;
 
-class Orden extends Entity
+class Usuario extends Entity
 {
     protected $dates   = ['created_at', 'updated_at', 'deleted_at'];
     protected $casts = [
@@ -14,10 +14,7 @@ class Orden extends Entity
     ];
     protected $attributes = [
         'id'                => null,
-        'fecha'             => null,
-        'id_token'          => null,
-        'total'             => null,
-        'observaciones'     => null,
-        'items'=>[]
+        'username'            => null,
+        'password'           => null
     ];
 }

@@ -1,0 +1,169 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="container-fluid mt-4" id="app">
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="pendientes-tab" data-bs-toggle="tab" data-bs-target="#pendientes" type="button" role="tab" aria-controls="pendientes" aria-selected="true">Pendientes</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="atendidos-tab" data-bs-toggle="tab" data-bs-target="#atendidos" type="button" role="tab" aria-controls="atendidos" aria-selected="false">Atendidos</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="cancelados-tab" data-bs-toggle="tab" data-bs-target="#cancelados" type="button" role="tab" aria-controls="cancelados" aria-selected="false">Cancelados</button>
+            </li>
+            
+          </ul>
+          <div class="tab-content" id="myTabContent">
+            
+            <div class="tab-pane fade show active" id="pendientes" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                {{ include("productos/productos.html", {'productos': pendientes}) }}
+            </div>
+            <div class="tab-pane fade" id="atendidos" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                {{ include("productos/productos.html", {'productos': atendidos}) }}
+            </div>
+            <div class="tab-pane fade" id="cancelados" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+                {{ include("productos/productos.html", {'productos': cancelados}) }}
+            </div>
+            <div class="tab-pane fade" id="licores" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">
+                {{ include("productos/productos.html", {'productos': licores}) }}
+            </div>
+
+          </div>
+
+        <div class="card mb-3">
+            <div class="card-header bg-primary text-light">
+                <h5 class="card-title">Gestion de pedidos pendientes</h5>
+            </div>
+            <div class="card-body">
+                <div class="row mt-2">
+
+                    <div class="col">
+                        <div class="table-responsive-md">
+                            <table class="table table-hover">
+                                <thead class="bg-black text-light p-1">
+                                <tr>
+                                    <th scope="col">Id</th>
+                                    <th scope="col">Hora</th>
+                                    <th scope="col">Mesa</th>
+                                    <th scope="col">Total</th>
+                                    <th scope="col">Observaciones</th>
+                                    <th scope="col">Acciones</th>
+                                    
+                                </tr>
+                                </thead>
+                                <tbody id="tpedidos">
+                                    {% for p in pedidos %}
+                                    <tr>
+                                        <td>{{p.id}}</td>
+                                        <td>{{p.fecha}}</td>
+                                        <td>{{p.token}}</td>
+                                        <td>{{p.total}}</td>
+                                        <td>{{p.observaciones}}</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#pedido_{{p.id}}">Ver</button>
+                                            {{include('compra/ver_pedido.html', {'pedido': p })}}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+{% block javascript %}
+<script>
+    let update = false;
+    let id = null;
+    function getProductos() {
+        $.ajax({
+            
+            url: '/producto',
+            method: 'get',
+            success: function(data){
+                
+                data.forEach(i => {
+                    let strdata = JSON.stringify(i);
+                    let html = `<th scope="row">${i.id}</th>
+                    <td>${i.nombre}</td> 
+                    <td>${i.precio}</td> 
+                    <td>${i.descripcion}</td> 
+                    <td>${i.tipo}</td> 
+                    <td> 
+                        <button class="btn btn-sm btn-warning update-btn" data-producto='${strdata}'> <i class="class fa fa-edit"></i> </button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteProducto(${i.id})"> <i class="class fa fa-trash"></i> </button> 
+                    </td>`;
+                    let tr = document.createElement('tr');
+                    tr.innerHTML = html;
+                    $("#tproductos").append(tr);
+                })
+                $(".update-btn").click(updateProducto)
+                
+            },
+            error: function(err){
+                console.log(err)
+            }
+        })
+        
+    }
+    function saveProducto(){
+        let url = '/producto';
+        let method = 'post';
+        if(update){
+            url += '/'+ id;
+            method = 'put';
+        }
+        let nombre = $("#nombre").val();
+        let precio = $("#precio").val();
+        let descripcion = $("#descripcion").val();
+        let tipo= $("#tipo").val();
+        let producto = { nombre, precio, descripcion, tipo};
+        console.log(producto)
+        $.ajax({
+            url: url,
+            method: method,
+            data: JSON.stringify(producto),
+            contentType:"application/json; charset=utf-8",
+            dataType:"json",
+            success: function(data){
+                location.reload();
+            },         
+            error: function(err){
+                console.log(err)
+            }
+        })
+    }
+    function updateProducto(){
+        let producto = $(this).data('producto')
+        $("#nombre").val(producto.nombre);
+        $("#precio").val(producto.precio);
+        $("#descripcion").val(producto.descripcion);
+        $("#tipo").val(producto.tipo);
+        update = true;
+        id = producto.id;
+        //let producto = { nombre, precio, descripcion};    
+    }
+    function deleteProducto(id){
+        $.ajax({
+            url: '/producto/'+id,
+            method: 'delete',
+            contentType:"application/json; charset=utf-8",
+            dataType:"json",
+            success: function(data){
+                location.reload();
+            },         
+            error: function(err){
+                console.log(err)
+            }
+        })
+    }
+    getProductos();
+</script>
+{% endblock %}

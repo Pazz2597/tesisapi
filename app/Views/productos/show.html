@@ -1,28 +1,42 @@
 {% extends 'base.html.twig' %}
 {% block body %}
 <div class="container-fluid">
-    <div class="row">
-        {% for p in productos %}               
-        <div class="col-sm-2 mt-2">
-            <div class="card text-center">
-                <div class="card-header bg-dark text-light">
-                    <h5 class="card-title">{{p.nombre}}</h5>
-                    <!-- Producto #{{p.id}} -->
-                </div>
-                <div class="card-body">
-                  <!-- <h5 class="card-title">{{p.nombre}}</h5> -->
-                  <p class="card-text">{{p.descripcion}}</p>
-                  
-                </div>
-                <div class="card-footer ">
-                    <button class="btn btn-primary agregar-producto" onclick="agregarProducto('{{p|json_encode()}}')">
-                    Agregar a la orden por: <i class="fa fa-dollar"></i>{{p.precio|number_format(2)}}
-                    </button>                    
-                </div>
-            </div>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="entradas-tab" data-bs-toggle="tab" data-bs-target="#entradas" type="button" role="tab" aria-controls="entradas" aria-selected="true">Entradas</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="fuertes-tab" data-bs-toggle="tab" data-bs-target="#fuertes" type="button" role="tab" aria-controls="fuertes" aria-selected="false">Platos fuertes</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="bebidas-tab" data-bs-toggle="tab" data-bs-target="#bebidas" type="button" role="tab" aria-controls="bebidas" aria-selected="false">Bebidas sin Alcohol</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="licores-tab" data-bs-toggle="tab" data-bs-target="#licores" type="button" role="tab" aria-controls="licores" aria-selected="false">Licores</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="promociones-tab" data-bs-toggle="tab" data-bs-target="#promociones" type="button" role="tab" aria-controls="promociones" aria-selected="false">Promociones</button>
+          </li>
+        
+      </ul>
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="entradas" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+            {{ include("productos/productos.html", {'productos': entradas}) }}
         </div>
-        {% endfor %}
-    </div>
+        <div class="tab-pane fade" id="fuertes" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+            {{ include("productos/productos.html", {'productos': fuertes}) }}
+        </div>
+        <div class="tab-pane fade" id="bebidas" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+            {{ include("productos/productos.html", {'productos': bebidas}) }}
+        </div>
+        <div class="tab-pane fade" id="licores" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">
+            {{ include("productos/productos.html", {'productos': licores}) }}
+        </div>
+        <div class="tab-pane fade" id="promociones" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">
+            {{ include("productos/productos.html", {'productos': promociones}) }}
+        </div>
+      </div>
+
 </div>
 
 

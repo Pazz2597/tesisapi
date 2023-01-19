@@ -17,7 +17,18 @@ class Home extends BaseController
     public function productos()
     {
         $model = new ProductoModel();
-        $productos = $model->findAll();
-        return $this->twig->render('productos/show.html', ['productos'=> $productos]);
+        $entradas = $model->where('tipo', 'ent')->findAll();
+        $fuertes = $model->where('tipo', 'fr')->findAll();
+        $bebidas = $model->where('tipo', 'dr')->findAll();
+        $licores = $model->where('tipo', 'lc')->orWhere('tipo', 'ck')->findAll();
+        $promociones = $model->where('tipo', 'pr')->findAll();
+        return $this->twig->render('productos/show.html', 
+        [
+            'entradas'=> $entradas,
+            'fuertes'=> $fuertes,
+            'bebidas'=> $bebidas,
+            'licores'=>$licores,
+            'promociones'=>$promociones
+        ]);
     }
 }
