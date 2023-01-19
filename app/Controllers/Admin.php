@@ -108,7 +108,11 @@ class Admin extends BaseController
             
 
 
-            return $this->twig->render('compra/pedidos.html', ['user'=>$user, 'pedidos'=>$pendientes]);
+            return $this->twig->render('compra/pedidos.html', ['user'=>$user, 
+                'pendientes'=>$pendientes,
+                'atendidos'=>$atendidos,
+                'cancelados'=>$cancelados
+            ]);
         }else{
             return redirect('Admin::login');
         }
