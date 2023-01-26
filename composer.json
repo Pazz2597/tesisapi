@@ -15,7 +15,8 @@
         "firebase/php-jwt": "^6.1",
         "psr/log": "^1.1",
         "twig/twig": "^3.0",
-        "takielias/codeigniter-websocket": "^1.0"
+        "takielias/codeigniter4-websocket": "@dev",
+        "textalk/websocket": "^1.6"
     },
     "require-dev": {
         "codeigniter/coding-standard": "^1.5",

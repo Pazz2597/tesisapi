@@ -36,6 +36,11 @@ $routes->set404Override();
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
+
+$routes->cli('/websocket/start', 'Websocket::start');
+$routes->cli('/websocket/send', 'Websocket::send');
+$routes->get('/websocket/user/(:segment)', 'Websocket::user/$1');
+
 $routes->get('/productos', 'Home::productos');
 
 $routes->get('/admin-login', 'Admin::login');
