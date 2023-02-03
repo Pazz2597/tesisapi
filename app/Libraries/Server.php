@@ -380,11 +380,9 @@ class Server implements MessageComponentInterface
      */
     protected function send_message($user = array(), $message = array(), $client = array())
     {
-        $messageObj = json_decode($message, true);
-        $messageObj['message'] = $messageObj['message'] . '  Puto !';
-        $message = json_encode($messageObj);
+        
         // Send the mess
-        output('info', "Imprimiendo: $message");
+    
         $user->send( $message);
 
         // We have to check if event callback must be called

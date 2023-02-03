@@ -49,9 +49,15 @@ $routes->get('/logout' ,'Admin::logout');
 
 $routes->get('/admin/productos', 'Admin::productos');
 $routes->get('/admin/pedidos', 'Admin::pedidos');
+$routes->get('/admin/procesar/(:num)', 'Admin::procesar/$1');
+$routes->get('/admin/despachar/(:num)', 'Admin::despachar/$1');
+$routes->get('/admin/cancelar/(:num)', 'Admin::cancelar/$1');
 //$routes->resource('login');
 $routes->get('/login/(:any)/(:any)', 'Login::index/$1/$2');
 $routes->get('/mesa/alerta', 'Mesa::alerta');
+$routes->get('/mesa/recibir/(:num)', 'Mesa::recibir/$1');
+$routes->get('/mesa/list', 'Mesa::list');
+
 $routes->resource('mesa',['filter' => 'authFilter']);
 $routes->resource('producto',[]);
 $routes->resource('orden',[]);
