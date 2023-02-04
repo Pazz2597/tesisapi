@@ -47,6 +47,7 @@ $routes->get('/admin/pedidos', 'Admin::pedidos');
 //$routes->resource('login');
 $routes->get('/login/(:any)/(:any)', 'Login::index/$1/$2');
 $routes->get('/mesa/alerta', 'Mesa::alerta');
+$routes->get('/mesa/atendido', 'Mesa::atendido');
 $routes->resource('mesa',['filter' => 'authFilter']);
 $routes->resource('producto',[]);
 $routes->resource('orden',[]);
