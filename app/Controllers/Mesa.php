@@ -5,13 +5,16 @@ use App\Models\TokenModel;
 use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\API\ResponseTrait;
 use App\Models\MesaModel;
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
+use App\Models\OrdenModel;
 
 class Mesa extends ResourceController
 {
     use ResponseTrait;
-    
+    public function list(){
+        $model = new MesaModel();
+        $data['mesas'] = $model->select('id, codigo, descripcion, alerta')->findAll();
+        return $this->respond($data);
+    }
     public function index()
     {
         /*
@@ -32,17 +35,25 @@ class Mesa extends ResourceController
     public function alerta()
     {
         helper('jwt');
+        helper('websocket');
         $model = new MesaModel();
         $userData = getUserFromRequest($this->request);
         
         $id = $userData->mesa_id;
         $mesa = $model->find($id);
         
-        $mesa->alerta = $mesa->alerta ? 0:1;
+        $mesa->alerta = $mesa->alerta ? "0":"1";
         $model->update($id, $mesa);
+        $msg = [];
+        $msg['mesa_id'] = $id;
+        $msg['alerta'] = $mesa->alerta;
+        $jsonMsg = json_encode($msg);
+        send($jsonMsg);
+
         return $this->respond($mesa);
         
     }
+<<<<<<< HEAD
 
     public function atendido()
     {
@@ -59,4 +70,38 @@ class Mesa extends ResourceController
         
     }
     
+=======
+    public function recibir(int $tokenNumber)
+    {
+        helper('jwt');
+        helper('websocket');
+        $tokenModel =  new TokenModel();
+
+        $token = $tokenModel->where('token', $tokenNumber)->orderBy('inicio', 'DESC')->first();
+        $userData = getUserFromRequest($this->request);
+        $model = new MesaModel();
+        $id = $userData->mesa_id;
+        $mesa = $model->find($id);
+
+        if($token && $token->id_mesa == $id){
+            $ordeModel = new OrdenModel();
+            $orden = $ordeModel->where('id_token', $token->id)->orderBy('fecha', 'DESC')->first();
+            if($orden){
+                $orden->estado = 'A';
+                $ordeModel->update($orden->id, $orden);
+
+                $msg = [];
+                $msg['mesa_id'] = $id;
+                $msg['alerta'] = $mesa->alerta;
+                $jsonMsg = json_encode($msg);
+                send($jsonMsg, 'R');
+                
+                return $this->respond([], 200);
+            } 
+        }
+
+        return $this->respond([], 400);
+        
+    }
+>>>>>>> 922631f3467bd9615ed3af7c684bd302db27c1f8
 }

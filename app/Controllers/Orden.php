@@ -44,7 +44,7 @@ class Orden extends ResourceController
         $model = new OrdenModel();
         $orden =  new \App\Entities\Orden();
         $orden->id_token = $token->id;
-        $orden->fecha = (new DateTime())->format('Y-m-d');
+        $orden->fecha = (new DateTime())->format('Y-m-d H:i:s');
         $orden->observaciones = isset($data['observaciones']) ? $data['observaciones']: null;
         
         $productos = $data['productos']; 
@@ -76,7 +76,9 @@ class Orden extends ResourceController
 
         $response['success'] = true;
         $response['orden']=$orden;
-        
+        helper('websocket');
+        $jsonOrden = json_encode($orden);
+        send($jsonOrden, 'P');        
         return $this->respond($orden);
     }
     /*

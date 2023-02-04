@@ -270,7 +270,11 @@
 
                 <?php endif; ?>
 
+<<<<<<< HEAD
                 <?php $headers = $request->headers(); ?>
+=======
+                <?php $headers = $request->getHeaders(); ?>
+>>>>>>> 922631f3467bd9615ed3af7c684bd302db27c1f8
                 <?php if (! empty($headers)) : ?>
 
                     <h3>Headers</h3>
@@ -318,7 +322,11 @@
                     </tr>
                 </table>
 
+<<<<<<< HEAD
                 <?php $headers = $response->headers(); ?>
+=======
+                <?php $headers = $response->getHeaders(); ?>
+>>>>>>> 922631f3467bd9615ed3af7c684bd302db27c1f8
                 <?php if (! empty($headers)) : ?>
                     <?php natsort($headers) ?>
 

@@ -18,7 +18,7 @@ class CodeigniterWebsocket extends \Takielias\CodeigniterWebsocket\Config\Codeig
     public $timer = false;
     public $interval = 1;
     public $auth = false;
-    public $debug = false;
+    public $debug = true;
     public $jwt_key = "GGFSRTSYTSOPLGCCXS";
     public $token_timeout = 1;
 

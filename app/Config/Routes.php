@@ -36,6 +36,11 @@ $routes->set404Override();
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
+
+$routes->cli('/websocket/start', 'Websocket::start');
+$routes->cli('/websocket/send', 'Websocket::send');
+$routes->get('/websocket/user/(:segment)', 'Websocket::user/$1');
+
 $routes->get('/productos', 'Home::productos');
 
 $routes->get('/admin-login', 'Admin::login');
@@ -44,10 +49,19 @@ $routes->get('/logout' ,'Admin::logout');
 
 $routes->get('/admin/productos', 'Admin::productos');
 $routes->get('/admin/pedidos', 'Admin::pedidos');
+$routes->get('/admin/procesar/(:num)', 'Admin::procesar/$1');
+$routes->get('/admin/despachar/(:num)', 'Admin::despachar/$1');
+$routes->get('/admin/cancelar/(:num)', 'Admin::cancelar/$1');
 //$routes->resource('login');
 $routes->get('/login/(:any)/(:any)', 'Login::index/$1/$2');
 $routes->get('/mesa/alerta', 'Mesa::alerta');
+<<<<<<< HEAD
 $routes->get('/mesa/atendido', 'Mesa::atendido');
+=======
+$routes->get('/mesa/recibir/(:num)', 'Mesa::recibir/$1');
+$routes->get('/mesa/list', 'Mesa::list');
+
+>>>>>>> 922631f3467bd9615ed3af7c684bd302db27c1f8
 $routes->resource('mesa',['filter' => 'authFilter']);
 $routes->resource('producto',[]);
 $routes->resource('orden',[]);

@@ -11,6 +11,7 @@
                         <thead class="bg-black text-light p-1">
                         <tr>
                             <th scope="col">Id</th>
+                            <th scope="col">Tiempo</th>
                             <th scope="col">Hora</th>
                             <th scope="col">Mesa</th>
                             <th scope="col">Total</th>
@@ -21,14 +22,27 @@
                         </thead>
                         <tbody id="tpedidos">
                             {% for p in pedidos %}
-                            <tr>
+                            {% set color = 'bg-default'%}
+                            {% if p.estado == 'X' %}
+                                {% set color = 'bg-warning'%}
+                            {% elseif p.estado == 'O' %}
+                                {% set color = 'bg-success text-light'%}
+                            {% endif %}
+                            <tr class="{{color}}">
                                 <td>{{p.id}}</td>
+                                <td><span class="tiempo">{{p.tiempo}}</span></td>
                                 <td>{{p.fecha}}</td>
-                                <td>{{p.token}}</td>
+                                <td>{{p.codigo}}</td>
                                 <td>{{p.total}}</td>
                                 <td>{{p.observaciones}}</td>
                                 <td>
-                                    <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#pedido_{{p.id}}">Ver</button>
+                                    {% if p.estado == 'P' %}
+                                    <a class="btn btn-sm btn-warning" href="/admin/procesar/{{p.id}}">Procesar</a> 
+                                    {% elseif p.estado == 'X' %}
+                                    <a class="btn btn-sm btn-success"  href="/admin/despachar/{{p.id}}">Despachar</a>
+                                    {% endif %}
+                                    <a class="btn btn-sm btn-danger" href="/admin/cancelar/{{p.id}}">Cancelar</a>
+                                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#pedido_{{p.id}}">Ver</button>
                                     {{include('compra/ver_pedido.html', {'pedido': p })}}
                                 </td>
                             </tr>
