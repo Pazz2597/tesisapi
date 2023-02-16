@@ -53,7 +53,6 @@ class Mesa extends ResourceController
         return $this->respond($mesa);
         
     }
-<<<<<<< HEAD
 
     public function atendido()
     {
@@ -70,7 +69,6 @@ class Mesa extends ResourceController
         
     }
     
-=======
     public function recibir(int $tokenNumber)
     {
         helper('jwt');
@@ -103,5 +101,4 @@ class Mesa extends ResourceController
         return $this->respond([], 400);
         
     }
->>>>>>> 922631f3467bd9615ed3af7c684bd302db27c1f8
 }

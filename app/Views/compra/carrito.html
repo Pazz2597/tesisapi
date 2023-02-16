@@ -31,6 +31,42 @@
                 </div>
               </form>
         </div>
+
+       <div>
+        <p style="font-size: 13px;color: crimson;">Por defecto los comprobantes saldrán a consumidor final. 
+          Puedes cambiar los datos en los siguientes campos a continuación</p>
+        </p>
+        
+          <button class="btn btn-info" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            Datos de Facturación
+          </button> 
+          
+      </div>
+        <div class="collapse" id="collapseExample">
+          <div class="card card-body">
+
+            <label for="idCliente">Número de Cedula o RUC</label>
+            <input id ="idCliente" inputmode="numeric" value="9999999999" onfocus="cleanAll(this)" onkeyup=keyDetect(this)>
+            <label for="nombCliente">Nombre y apellido</label>
+            <input id ="nombCliente" type="text" value="Consumidor final" onfocus="cleanAll(this)"  >
+            <label for="dirCliente">Dirección</label>
+            <input id ="dirCliente" type="text" value="Ibarra" onfocus="cleanAll(this)">
+            <label for="tlfCliente">Teléfono</label>
+            <input id ="tlfCliente" inputmode="numeric" value="9999999999" onfocus="cleanAll(this)">
+            <label for="emailCliente">Correo electrónico</label>
+            <input id ="emailCliente" type="email" value="correo@ejemplo.com" onfocus="cleanAll(this)">
+            <br>
+            <p style="font-size: 13px;color: crimson;" id="textoRegistro">Parece que no estás registrado.
+              Presiona el siguiente botón para guardar tus datos</p>
+              <br>
+            <button class="btn btn-success" id="botonRegistro" onclick="registrarCliente()" >Registrarse</button>
+
+            
+          </div>
+        </div>
+
+        
+
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Continuar pedido</button>
           <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalConfirmar">Confirmar orden</button>
@@ -49,8 +85,9 @@
               </button>
             </div>
             <div class="modal-body">
-                Presiona el botón derecho del dispositivo en tu mesa para obtener una clave que nos permita validar tu pedido en nuestro servidor
+                Presiona el botón con la letra C del dispositivo en tu mesa para obtener una clave que nos permita validar tu pedido en nuestro servidor.
                 <br>
+                <p style="font-size: 13px;color: crimson;" >Este código generado tendrá un tiempo de duración de 1 minuto</p>
                 <br>
                 <div class="form-group">
                     <label for="tokenMesa">Ingresa los dígitos mostrados en pantalla</label>
@@ -58,9 +95,94 @@
                 </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
               <button type="button" class="btn btn-primary" id="btnConfirmarOrden">Confirmar</button>
             </div>
           </div>
         </div>
       </div>
+
+      <script>
+        let cedulaIn;
+        const tRegistro=document.getElementById("textoRegistro");
+        const bRegistro = document.querySelector('#botonRegistro');
+        bRegistro.style.display="none";
+        tRegistro.style.display="none";
+        
+        function cleanAll(target){
+          target.value="";
+        }
+
+        function keyDetect(target){
+          if(target.value!==""){
+             cedulaIn=target.value;
+            if(cedulaIn.trim().length===10 || cedulaIn.trim().length===13){
+              getCliente(cedulaIn);
+            }
+
+        }
+
+        }
+
+
+        function getCliente(cedula) {
+          const requestData={
+            ci:cedula
+          }
+        $.ajax({
+            
+            url: '/cliente/buscar',
+            method: 'post',
+            data:JSON.stringify(requestData),
+
+            success: function(data){
+                console.log(data.nombAp);
+                $("#nombCliente").val(data.nombAp);
+                $("#dirCliente").val(data.direccion);
+                $("#tlfCliente").val(data.telefono);
+                $("#emailCliente").val(data.correo);
+
+                
+            },
+            error: function(err){
+                console.log(err)
+                bRegistro.style.display='block';
+                tRegistro.style.display='block';
+                
+
+            }
+        })
+        
+    }
+
+    function registrarCliente() {
+      let ci=$("#idCliente").val();
+      let nombAp=$("#nombCliente").val();
+      let direccion=$("#dirCliente").val();
+      let telefono=$("#tlfCliente").val();
+      let correo=$("#emailCliente").val();
+
+      let requestData={
+            ci, nombAp,direccion,telefono,correo,
+          }
+          console.log(requestData);
+        $.ajax({
+            
+            url:'/cliente/guardar',
+            method: 'post',
+            data:JSON.stringify(requestData),
+
+            success: function(data){
+             console.log(data);
+
+                
+            },
+            error: function(err){
+                console.log(err)
+                
+
+            }
+        })
+        
+    }
+      </script>
