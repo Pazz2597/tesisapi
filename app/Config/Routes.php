@@ -55,12 +55,16 @@ $routes->get('/admin/cancelar/(:num)', 'Admin::cancelar/$1');
 //$routes->resource('login');
 $routes->get('/login/(:any)/(:any)', 'Login::index/$1/$2');
 $routes->get('/mesa/alerta', 'Mesa::alerta');
+$routes->get('/mesa/atendido', 'Mesa::atendido');
 $routes->get('/mesa/recibir/(:num)', 'Mesa::recibir/$1');
 $routes->get('/mesa/list', 'Mesa::list');
 
 $routes->resource('mesa',['filter' => 'authFilter']);
 $routes->resource('producto',[]);
 $routes->resource('orden',[]);
+$routes->post('cliente/buscar','Cliente::buscar');
+ $routes->post('cliente/guardar','Cliente::guardar');
+
 
 
 /*

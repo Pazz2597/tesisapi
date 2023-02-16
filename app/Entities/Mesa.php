@@ -17,6 +17,7 @@ class Mesa extends Entity
         'codigo'            => null,
         'secreto'           => null,
         'descripcion'       => null,
-        'alerta'=>null
+        'alerta'            => null,
+        'atend'             => null,
     ];
 }

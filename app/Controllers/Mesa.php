@@ -53,6 +53,22 @@ class Mesa extends ResourceController
         return $this->respond($mesa);
         
     }
+
+    public function atendido()
+    {
+        helper('jwt');
+        $model = new MesaModel();
+        $userData = getUserFromRequest($this->request);
+        
+        $id = $userData->mesa_id;
+        $mesa = $model->find($id);
+        
+        $mesa->atend = $mesa->atend ? 0:1;
+        $model->update($id, $mesa);
+        return $this->respond($mesa);
+        
+    }
+    
     public function recibir(int $tokenNumber)
     {
         helper('jwt');
