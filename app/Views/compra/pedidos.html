@@ -207,11 +207,13 @@
         ventas = Array.from(prediccion).map((p, index) => {
             const producto = productos.filter( producto => producto.codigo == index + 1)[0];
             producto.ventas = p;
-            let html = `<tr>
-                <td>${producto.nombre}</td>
-                <td>${producto.ventas}</td>
-            </tr>`
-            $("#predicciones").append(html);
+            if(p > 0){
+                let html = `<tr>
+                    <td>${producto.nombre}</td>
+                    <td>${producto.ventas}</td>
+                </tr>`
+                $("#predicciones").append(html);
+            }
             return producto;
         })
         console.log(ventas);
@@ -232,7 +234,7 @@
                 console.log(jsonData)
                 setTimeout(()=>{
                     predecirVentas(jsonData);
-                }, 3000)
+                }, 1000)
             },
             error: function(err){
                 console.log(err)
