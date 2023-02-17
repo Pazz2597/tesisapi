@@ -52,6 +52,7 @@ $routes->get('/admin/pedidos', 'Admin::pedidos');
 $routes->get('/admin/procesar/(:num)', 'Admin::procesar/$1');
 $routes->get('/admin/despachar/(:num)', 'Admin::despachar/$1');
 $routes->get('/admin/cancelar/(:num)', 'Admin::cancelar/$1');
+$routes->get('/admin/resumen', 'Admin::resumen');
 //$routes->resource('login');
 $routes->get('/login/(:any)/(:any)', 'Login::index/$1/$2');
 $routes->get('/mesa/alerta', 'Mesa::alerta');

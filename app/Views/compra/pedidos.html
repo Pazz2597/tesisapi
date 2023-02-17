@@ -20,7 +20,9 @@
                     <li class="nav-item" role="presentation">
                       <button class="nav-link" id="cancelados-tab" data-bs-toggle="tab" data-bs-target="#cancelados" type="button" role="tab" aria-controls="cancelados" aria-selected="false">Cancelados</button>
                     </li>
-                    
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="prediccion-tab" data-bs-toggle="tab" data-bs-target="#prediccion" type="button" role="tab" aria-controls="prediccion" aria-selected="false">Predicción</button>
+                      </li>
                   </ul>
                   <div class="tab-content" id="myTabContent">
                     
@@ -33,7 +35,17 @@
                     <div class="tab-pane fade" id="cancelados" role="tabpanel" tabindex="0">
                         {{ include("compra/tabla_pedidos.html", {'pedidos': cancelados, 'tipo': 'Cancelados'}) }}
                     </div>
-        
+                    <div class="tab-pane fade" id="prediccion" role="tabpanel" tabindex="0">
+                        <table class="table table-stripped">
+                            <thead>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                            </thead>
+                            <tbody id="predicciones">
+
+                            </tbody>
+                        </table>
+                    </div>
                   </div>
         
             </div>
@@ -168,5 +180,78 @@
     }
     reducirTiempo();
 </script> 
+<script src="/js/tf.min.js"></script>
+<script type="text/javascript">
     
+    var modelo = null;
+    var ventas = [];
+    //Cargar modelo
+    (async () => {
+        console.log("Cargando modelo...");
+        modelo = await tf.loadLayersModel("/model.json");
+        console.log("Modelo cargado...");
+    })();
+
+    function predecirVentas(data) {
+      if (modelo != null) {
+        
+        var tensor = tf.tensor2d([data]);
+        var prediccion = modelo.predict(tensor).dataSync();
+        prediccion = prediccion.map(p => {
+            if(p< 0) p = 0;
+            else p = Math.ceil(p, 0);
+            return p;
+        });
+        
+        
+        ventas = Array.from(prediccion).map((p, index) => {
+            const producto = productos.filter( producto => producto.codigo == index + 1)[0];
+            producto.ventas = p;
+            let html = `<tr>
+                <td>${producto.nombre}</td>
+                <td>${producto.ventas}</td>
+            </tr>`
+            $("#predicciones").append(html);
+            return producto;
+        })
+        console.log(ventas);
+        
+        
+        //prediccion = Math.round(prediccion, 1);
+        //document.getElementById("resultado").innerHTML = celsius + " celsius son " + prediccion + " fahrenheit!";
+      } else {
+        console.log("Intenta de nuevo en un momento...");
+      }
+    }
+    function obtenerDatos(){
+        $.ajax({
+            url: '/admin/resumen',
+            method: 'GET',
+            success: function(data){
+                const jsonData = JSON.parse(data);
+                console.log(jsonData)
+                setTimeout(()=>{
+                    predecirVentas(jsonData);
+                }, 3000)
+            },
+            error: function(err){
+                console.log(err)
+            }
+          })
+        
+        $.ajax({
+            url: '/producto',
+            method: 'GET',
+            success: function(data){
+                productos = data;
+            },
+            error: function(err){
+                console.log(err)
+            }
+        })
+    }
+    var productos = null;
+    
+    obtenerDatos();
+  </script>
 {% endblock %}

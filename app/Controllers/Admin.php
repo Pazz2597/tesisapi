@@ -8,6 +8,7 @@ use App\Models\UsuarioModel;
 use CodeIgniter\HTTP\Request;
 use DateInterval;
 use DateTime;
+use DateTimeZone;
 
 class Admin extends BaseController
 {
@@ -174,4 +175,54 @@ class Admin extends BaseController
         }
         return redirect('Admin::login');        
     }
+    public function resumen(){
+        $session = session();
+        $user = $session->get('user');
+        if(true){
+            $currentDate = new DateTime();
+            $tempDate = new DateTime();
+            $yesterdayTime = $tempDate->sub(new DateInterval('P1D'));
+            $strCurrent = $currentDate->format('Y-m-d');
+            $strYesterday = $yesterdayTime->format('Y-m-d');
+            $sql = "SELECT d.cantidad, p.*, SUM(d.cantidad) as total
+                        FROM orden o 
+                        INNER JOIN orden_item d ON o.id = d.id_orden
+                        INNER JOIN producto p ON d.id_producto = p.id AND p.codigo = :codigo:
+                        WHERE fecha >= '$strYesterday' AND fecha < '$strCurrent'
+                        GROUP BY p.id";
+
+            $sqlFeriadoHoy = "SELECT * FROM `feriado` WHERE CURDATE() between inicio and fin";
+            $sqlFeriadoAyer = "SELECT DATE_SUB(CURDATE(), INTERVAL 1 DAY) AS ayer, f.* FROM  `feriado` f HAVING ayer between inicio and fin";            
+
+            $current_day = date("w", strtotime($currentDate->format('l')));
+            $current_day = $current_day == 0 ? 7:$current_day;
+            $yesterday_day = $current_day - 1;
+            $yesterday_day = $yesterday_day == 0 ? 7:$yesterday_day;
+            
+            $db = \Config\Database::connect();
+            $entradas = [];
+            $hoyEsFeriado = 0;
+            
+            $feriadoHoy = $db->query($sqlFeriadoHoy)->getResult();
+            if($feriadoHoy) $hoyEsFeriado = 1;            
+            
+            $entradas[0] = $hoyEsFeriado;
+            $entradas[1] = (int)$current_day;
+
+            for($i = 0; $i < 20 ; $i++){
+                $codigo = $i+1;
+                $resumen = $db->query($sql, ['codigo'=>$codigo])->getResult();
+                $entradas[2 + $i] = 0;
+                if($resumen)$entradas[2 + $i] = (int)($resumen[0]->total);
+            }
+            $feriadoAyer = $db->query($sqlFeriadoAyer)->getResult();
+            $ayerFueFeriado = 0;
+            if($feriadoAyer) $ayerFueFeriado = 1;            
+            $entradas[22] = $ayerFueFeriado;
+            $entradas[23] = $yesterday_day;
+            return json_encode($entradas);
+        }
+        return $this->response->setStatusCode(403);  
+    }
+    
 }
