@@ -1,0 +1,68 @@
+<div class="d-none">
+    <div class="contenedor_imprimir" id="contenedor_imprimir">
+        <b>ILLAPA</b><br>
+        RUC.: 10020030040001<br>
+        ORDEN.N.{{ pedido.id }}<br>
+        MESA: {{pedido.codigo}}
+        ______________________________________________________ <br>
+        ILLAPA<br>
+        Dirección Matriz: IBARRA CALLE BLAH BLAH<br>
+        Teléfono 1: 09874651321<br>
+        Correo: pedidos@illapa.com<br>
+        _______________________________________________________ <br>
+        Nombres: {{ pedido.nombAp }} <br>
+        Direccion: {{ pedido.direccion }}<br>
+        Telefono: {{pedido.telefono}}<br>
+        RUC: {{pedido.ci}}<br>
+        Fecha Emisión: {{ factura.fecha|date('d/m/Y') }}<br>
+        _______________________________________________________ <br>
+        <div class="table">
+            <table style="max-width: 100%;">
+                <thead>
+                <tr>
+                    <th>Cod</th>
+                    <th>Descripcion</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Descuento</th>
+                    <th>Total</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for d in pedido.items %}
+                    <tr>
+                        <td>{{d.id}}</td>
+                        <td>{{d.nombre}}</td>
+                        <td>{{d.cantidad}}</td>
+                        <td>{{d.precio}}</td>
+                        <td>0.00</td>
+                        <td>{{d.precio * d.cantidad}}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td rowspan="11" colspan="4">
+                    </td>
+                    <td colspan="2"></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="2">Descuento</td>
+                    <td>0.00</td>
+                </tr>
+               
+                <tr>
+                    <td colspan="2">Propina:</td>
+                    <td>0.00</td>
+                </tr>
+                <tr>
+                    <td colspan="2"><b>VALOR TOTAL</b></td>
+                    <td>{{pedido.total}}</td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    
+</div>

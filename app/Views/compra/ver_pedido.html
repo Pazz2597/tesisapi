@@ -60,12 +60,23 @@
               </form>
         </div>
         <div class="modal-footer">
+          <button type="button" class="btn btn-warning" id="imprimir">Imprimir</button>
+          {{include('compra/imprimir_pedido.html', {'pedido': pedido })}}
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Continuar</button>
+
         </div>
       </div>
     </div>
   </div>
-
+  <script>
+    const btnImprimir = document.getElementById("imprimir");
+    btnImprimir.onclick = function (){
+      const newWindow = window.open('', 'Imprimir', 'width=500, height=600');
+      const contenido  = document.getElementById("contenedor_imprimir");      
+      newWindow.document.body.innerHTML = contenido.innerHTML;
+      newWindow.print();
+    }
+  </script>
   <!-- <script>
     let client=document.getElementById("idCliente").value;
     clientByID(client);
