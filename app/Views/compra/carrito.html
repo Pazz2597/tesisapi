@@ -57,9 +57,11 @@
             <input id ="emailCliente" type="email" value="correo@ejemplo.com" onfocus="cleanAll(this)">
             <br>
             <p style="font-size: 13px;color: crimson;" id="textoRegistro">Parece que no estás registrado.
-              Presiona el siguiente botón para guardar tus datos</p>
+              LLena el formulario con tus datos y presiona el siguiente botón para guardarlos</p>
               <br>
             <button class="btn btn-success" id="botonRegistro" onclick="registrarCliente()" >Registrarse</button>
+            <p style="font-size: 13px; color:darkgreen ;" id="registroCompleto">Tu registro ha sido exitoso, continua con la confirmación de tu orden
+            </p>
 
             
           </div>
@@ -69,7 +71,7 @@
 
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Continuar pedido</button>
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalConfirmar">Confirmar orden</button>
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalConfirmar" id="btnSiguiente">Confirmar orden</button>
         </div>
       </div>
     </div>
@@ -97,6 +99,11 @@
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
               <button type="button" class="btn btn-primary" id="btnConfirmarOrden">Confirmar</button>
+              <p style="font-size: 13px; color:darkgreen ;" id="pedidoCompleto">Tu pedido ha sido recibido. Puedes cerrar esta ventana
+              </p>
+              <p style="font-size: 13px; color:rgb(251, 13, 61) ;" id="pedidoIncompleto">Existe un error con el código ingresado, verifica que sea el correcto
+                o presiona nuevamente  el botón con la letra C para obtener otro código
+              </p>
             </div>
           </div>
         </div>
@@ -104,8 +111,14 @@
 
       <script>
         let cedulaIn;
+        const tRegistroCompleto=document.getElementById("registroCompleto");
         const tRegistro=document.getElementById("textoRegistro");
         const bRegistro = document.querySelector('#botonRegistro');
+        const bCompletoC=document.getElementById("pedidoCompleto");
+        const bCompletoE=document.getElementById("pedidoIncompleto");
+        bCompletoC.style.display="none";
+        bCompletoE.style.display="none";
+        tRegistroCompleto.style.display="none";
         bRegistro.style.display="none";
         tRegistro.style.display="none";
         
@@ -129,31 +142,31 @@
           const requestData={
             ci:cedula
           }
-        $.ajax({
+          $.ajax({
             
-            url: '/cliente/buscar',
-            method: 'post',
-            data:JSON.stringify(requestData),
+              url: '/cliente/buscar',
+              method: 'post',
+              data:JSON.stringify(requestData),
 
-            success: function(data){
-                console.log(data.nombAp);
+                success: function(data){
+                console.log(data.id);
                 $("#nombCliente").val(data.nombAp);
                 $("#dirCliente").val(data.direccion);
                 $("#tlfCliente").val(data.telefono);
                 $("#emailCliente").val(data.correo);
 
                 
-            },
-            error: function(err){
+              },
+               error: function(err){
                 console.log(err)
                 bRegistro.style.display='block';
                 tRegistro.style.display='block';
                 
 
-            }
-        })
+               }
+          })
         
-    }
+          }   
 
     function registrarCliente() {
       let ci=$("#idCliente").val();
@@ -174,7 +187,7 @@
 
             success: function(data){
              console.log(data);
-
+             tRegistroCompleto.style.display="block";
                 
             },
             error: function(err){

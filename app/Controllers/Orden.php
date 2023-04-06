@@ -46,6 +46,8 @@ class Orden extends ResourceController
         $orden->id_token = $token->id;
         $orden->fecha = (new DateTime())->format('Y-m-d H:i:s');
         $orden->observaciones = isset($data['observaciones']) ? $data['observaciones']: null;
+        // ingreso de id cliente
+        $orden->id_cliente = $data['id_cliente'];
         
         $productos = $data['productos']; 
                 

@@ -17,10 +17,7 @@ class Mesa extends ResourceController
     }
     public function index()
     {
-        /*
-        $model = new MesaModel();
-        $data['mesas'] = $model->findAll();
-        */
+       
         helper('jwt');
         $model = new TokenModel();
         $userData = getUserFromRequest($this->request);

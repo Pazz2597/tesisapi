@@ -8,9 +8,21 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
+        
         <div class="modal-body">
+          <div class="card">
+            <ul class="list-group">
+              <li class="list-group-item active fa fa-user" > Datos de Cliente</li>
+              <li class="list-group-item">Cedula: {{pedido.ci}}</li>
+              <li class="list-group-item">Nombre: {{pedido.nombAp}}</li>
+              <li class="list-group-item" >Dirección: {{pedido.direccion}}</li>
+              <li class="list-group-item">Teléfono: {{pedido.telefono}}</li>
+              <li class="list-group-item">Correo: {{pedido.correo}}</li>
+            </ul>
+          </div>
+
             <div class="card">
-                <div class="card-header">
+                <div class="card-header text-light bg-primary ">
                   Items del pedido:
                 </div>
                 <ul class="list-group list-group-flush" id="listaProductos">
@@ -30,10 +42,10 @@
                     </li>
                     {% endfor %}
                 </ul>
-                <div class="card-footer">
+                <div class="card-footer bg-warning">
                     <figure class="text-end">
-                        <blockquote class="blockquote">
-                          <p>Total: <span id="totalCarrito"><b>{{pedido.total}}</b></span> <i class="fa fa-dollar"></i></p>
+                        <blockquote class="blockquote ">
+                          <p >Total: <span id="totalCarrito"><b>{{pedido.total}}</b></span> <i class="fa fa-dollar"></i></p>
                         </blockquote>
                       </figure>
                 </div>
@@ -53,3 +65,37 @@
       </div>
     </div>
   </div>
+
+  <!-- <script>
+    let client=document.getElementById("idCliente").value;
+    clientByID(client);
+    // console.log(typeof client);
+function clientByID(ident) {
+          const requestData={
+            ci:ident
+          }
+          $.ajax({
+            
+              url: '/cliente/buscarId',
+              method: 'post',
+              data:JSON.stringify(requestData),
+
+                success: function(data){
+                console.log(data.id);
+                $("#nombrecl").val(data.nombAp);
+                
+                
+              },
+               error: function(err){
+                console.log(err)
+                bRegistro.style.display='block';
+                tRegistro.style.display='block';
+                
+
+               }
+          })
+        
+          }  
+
+          
+  </script> -->

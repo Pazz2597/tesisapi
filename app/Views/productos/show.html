@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-<div class="container-fluid">
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
+<div class="container-fluid" style="margin-top: 55px;">
+    <ul class="nav nav-tabs " style="margin-top: 55px ; background: #e3f2fd;" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
           <button class="nav-link active" id="entradas-tab" data-bs-toggle="tab" data-bs-target="#entradas" type="button" role="tab" aria-controls="entradas" aria-selected="true">Entradas</button>
         </li>
@@ -9,7 +9,7 @@
           <button class="nav-link" id="fuertes-tab" data-bs-toggle="tab" data-bs-target="#fuertes" type="button" role="tab" aria-controls="fuertes" aria-selected="false">Platos fuertes</button>
         </li>
         <li class="nav-item" role="presentation">
-          <button class="nav-link" id="bebidas-tab" data-bs-toggle="tab" data-bs-target="#bebidas" type="button" role="tab" aria-controls="bebidas" aria-selected="false">Bebidas sin Alcohol</button>
+          <button class="nav-link" id="bebidas-tab" data-bs-toggle="tab" data-bs-target="#bebidas" type="button" role="tab" aria-controls="bebidas" aria-selected="false">Bebidas</button>
         </li>
         <li class="nav-item" role="presentation">
           <button class="nav-link" id="licores-tab" data-bs-toggle="tab" data-bs-target="#licores" type="button" role="tab" aria-controls="licores" aria-selected="false">Licores</button>
@@ -47,6 +47,11 @@
 {% block javascript %}
 <!--AGREGAR PRODUCTOS AL CARRITO-->
 <script>
+//agregar función de popover
+$(function () {
+  $('[data-toggle="popover"]').popover()
+})
+
     var productosCarrito = [];
     setNItems();
     function setNItems(){
@@ -95,8 +100,12 @@
     
 </script>
 <!--FIN AGREGAR PRODUCTOS AL CARRITO-->
+
 <!--MOSTRAR PRODUCTOS DEL CARRITO-->
 <script>
+    let cliente=9999999999;
+
+
     function actualizarVistaCarrito(){
         
         $html = '';
@@ -120,19 +129,27 @@
         $('#listaProductos').html($html);
         actualizarTotalCarrito();
     }
-    function actualizarTotalCarrito(){
+
+     function actualizarTotalCarrito(){
         let total = productosCarrito.reduce((prev, curr)=>{
             return prev + curr.cantidad*curr.precio
         },0)
         $("#totalCarrito").text(`${total.toFixed(2)}`);
-    }
-    $("#btnConfirmarOrden").click(function(){
+     }
+
+        $("#btnConfirmarOrden").click(function(){
+        const bCompletoC=document.getElementById("pedidoCompleto");
+        const bCompletoE=document.getElementById("pedidoIncompleto");
+        bCompletoC.style.display="none";
+        bCompletoE.style.display="none";
+        console.log(cliente);
         let observaciones = $("#observaciones").val();
         let token = $("#tokenMesa").val();
         let orden = {
             productos: productosCarrito,
             observaciones: observaciones,
-            token: token
+            token: token,
+            id_cliente: cliente
         };
         let url = '/orden';
         let method = 'post';
@@ -144,13 +161,50 @@
             contentType:"application/json; charset=utf-8",
             dataType:"json",
             success: function(data){
-                console.log(data)
+                console.log(data);
+                bCompletoE.style.display="none";
+                bCompletoC.style.display="block";
+                
+                
+
             },         
             error: function(err){
-                console.log(err)
+                console.log(err);
+                bCompletoE.style.display="block";
             }
         })
     })
+
+    $("#btnSiguiente").click(function(){
+        const idCl=document.getElementById("idCliente");
+        getClienteId(idCl.value);
+    
+    })
+
+
+    function getClienteId(cedula) {
+          const requestData={
+            ci:cedula
+          }
+          $.ajax({
+            
+              url: '/cliente/buscar',
+              method: 'post',
+              data:JSON.stringify(requestData),
+
+                success: function(data){
+                console.log(`${data.nombAp}, ${data.id}`);
+                cliente=data.id;
+              },
+               error: function(err){
+                console.log(err)
+                cliente=1;
+                
+
+               }
+          })
+        
+          }   
 </script>
 <!--FIN MOSTRAR PRODUCTOS DEL CARRITO-->
 {% endblock %}

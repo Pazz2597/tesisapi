@@ -18,6 +18,7 @@ class Orden extends Entity
         'id_token'          => null,
         'total'             => null,
         'observaciones'     => null,
-        'items'=>[]
+        'items'             =>[],
+        'id_cliente'        =>null,
     ];
 }

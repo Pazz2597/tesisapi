@@ -65,6 +65,7 @@ $routes->resource('producto',[]);
 $routes->resource('orden',[]);
 $routes->post('cliente/buscar','Cliente::buscar');
  $routes->post('cliente/guardar','Cliente::guardar');
+ $routes->post('cliente/buscarId','Cliente::buscarId');
 
 
 

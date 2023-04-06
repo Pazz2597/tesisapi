@@ -15,10 +15,6 @@ class Login extends ResourceController
         try {
             helper('encryption');  
             $mesaModel = new MesaModel();
-            //$jsonData = $this->request->getJSON();
-            //return $this->respond(['codigo recibido'=>$codigo, 'secreto recibido'=> $secreto], 200);
-            //$codigo = $jsonData->codigo;
-            //$secreto = $jsonData->secreto;
             
             $mesa = $mesaModel->where('codigo', $codigo)->first();
             
@@ -29,22 +25,21 @@ class Login extends ResourceController
             $hash = $mesa->secreto;
             $pwd_verify = password_verify($secreto, $hash);
 
-            //$pwd_verify = $user['password'] == encrypt($password);
     
             if(!$pwd_verify) {
                 return $this->respond(['error' => 'Datos de la mesa incorrectos.'], 401);
             }
             
             $key = getSecret(); 
-            $iat = time(); // current timestamp value
+            $iat = time(); 
             $exp = $iat + 2592000;
-            //return $this->respond($key);
+
             $payload = array(
                 "iss" => "RESTAURANTE",
                 "aud" => "RESTAURANTE",
                 "sub" => "Authentication",
-                "iat" => $iat, //Time the JWT issued at
-                "exp" => $exp, // Expiration time of token
+                "iat" => $iat, 
+                "exp" => $exp, 
                 "mesa_id" => $mesa->id,
             );
                         

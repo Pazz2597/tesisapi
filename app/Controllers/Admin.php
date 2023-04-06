@@ -67,10 +67,11 @@ class Admin extends BaseController
             $db      = \Config\Database::connect();
             $fecha = (new DateTime())->format('Y-m-d');
             
-            $sql = "SELECT o.*,  m.id as mesa_id, m.codigo
+            $sql = "SELECT o.*,  m.id as mesa_id, m.codigo, c.ci, c.nombAp, c.direccion, c.telefono, c.correo
                         FROM orden o 
                         INNER JOIN token t ON o.id_token = t.id 
                         INNER JOIN mesa m ON t.id_mesa = m.id
+                        LEFT JOIN clientes c ON o.id_cliente= c.id
                         WHERE (o.estado = :estado: OR o.estado = :estado1: OR o.estado = :estado2: ) AND o.fecha >= :fecha:";
 
             $pendientes = $db->query($sql, ['fecha'=>$fecha, 'estado'=> 'P', 'estado1'=> 'X', 'estado2'=> 'O'])->getResult();
@@ -105,6 +106,8 @@ class Admin extends BaseController
                     //$items = $itemModel->where('id_orden', $p->id)->findAll();
                     $p->items = $items;                    
                 }
+            }
+            if($atendidos && count($atendidos)>0){
                 foreach($atendidos as $p){
                     $builder = $db->table('orden_item');
                     $builder->select('orden_item.*, producto.nombre, producto.precio');
@@ -113,6 +116,8 @@ class Admin extends BaseController
                     //$items = $itemModel->where('id_orden', $p->id)->findAll();
                     $p->items = $items;
                 }
+            }
+            if($cancelados && count($cancelados)>0){
                 foreach($cancelados as $p){
                     $builder = $db->table('orden_item');
                     $builder->select('orden_item.*, producto.nombre, producto.precio');

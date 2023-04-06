@@ -42,7 +42,7 @@
                                     <a class="btn btn-sm btn-success"  href="/admin/despachar/{{p.id}}">Despachar</a>
                                     {% endif %}
                                     <a class="btn btn-sm btn-danger" href="/admin/cancelar/{{p.id}}">Cancelar</a>
-                                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#pedido_{{p.id}}">Ver</button>
+                                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#pedido_{{p.id}}" onclick="">Ver</button>
                                     {{include('compra/ver_pedido.html', {'pedido': p })}}
                                 </td>
                             </tr>

@@ -34,5 +34,15 @@ class Cliente extends ResourceController
       
     }
 
+    public function buscarId()
+    {
+        $json = $this->request->getJSON();
+        $data=$json->ci;
+        $model = new ClienteModel();
+        $cliente=$model->where('id',$data)->first();
+        return $this->respond($cliente);
+      
+    }
+
     
 }

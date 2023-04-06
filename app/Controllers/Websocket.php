@@ -69,7 +69,7 @@ class Websocket extends Controller
             ];
             $msgJson = json_encode($msgObj);
             //$client = new WebSocketClient("wss://marketdata.tradermade.com/feedadv");
-            $client = new Client("ws://localhost:8282");
+            $client = new Client("ws://192.168.1.123:8282");
             $client->send($msgJson);
             $msgObj['recipient_id'] = 1;
             $msgObj['type'] = 'chat';
